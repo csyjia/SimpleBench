@@ -1,24 +1,10 @@
 Name: Jia, Yichen
 Project: PA-1 (Simplebench)
 Instructor: Feng Chen
-Class: cs7700-sp18
+Class: cs7700-sp18 (Advance Storage System)
 LogonID: cs770095
 
-/****************************************Introduction**************************************/
-
-This is a program project for the course CSC 7700 Advanced Storage Systems, Spring 2018.
-The purpose of this project is to develop a simple storage benchmark tool that generates 
-different types of workloads to drive the performance tests on a disk drive. 
-
-The rest of the README file consists of three parts:
-
-Part 1: Run and compile the codes
-Part 2: The structure of the source code files
-Part 3: Additional descriptions
-
 /******************************Part 1: Run and compile the codes*************************/
-
-The tool is super easy to use.
 
 (1) To compile, just use the make command: $ make  
 (2) After successfully compiling, you will get an executable file (the benchmark tool): simplebench
