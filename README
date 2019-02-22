@@ -56,38 +56,6 @@ presents the activity of each I/O request, following the format:
     Size: The request size (in number of sectors).
     Latency: The time of completing request (in milliseconds).
 
-Notes:
-
-(1) Parameter Settings
-
-The parameters can be set in any order; but all of them have to be properly set.
-Refer to the descriptions above for details. The tool will report the incorrect 
-settings.
-
-(2) Access permissions
-
-The tool will check your permissions to test the target file or device. Before testing, 
-make sure you have the permission to access the target file or device to be tested. 
-For the trace file; make sure you have the permissionto create the file.  
-
-(3) Interfernces of I/O tracing
-
-The process of collecting I/O traces may interfere the testing process, therefore it is not 
-proper put the trace file on the drive to be tested. In particular, when the trace file is 
-not too large, it can be put in an RAM-based file system such as tempfs (e.g., under the 
-directory "/run" on Linux OS). 
-
-(4) Factors affecting the observed performance 
-
-For using direct_io, the buffer has to be alligned with the memory page size; therefore, the 
-observed performance may be different by using different operation systems.
-
-In addition, directly writing a disk drive (especially with direct_io) may lead to system 
-corruption if the system metadata on the drive was overwriten.
-
-The functions used to issue read and write requests, such as read/write and pread/pwrite, 
-may have different performance. Specifically, this tool uses the read/write functions.
-
 /***************************Part 2: The structure of the source files*********************/
 
 The project has eight source code files:
