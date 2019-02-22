@@ -1,0 +1,103 @@
+Name: Jia, Yichen
+Project: PA-1 (Simplebench)
+Instructor: Feng Chen
+Class: cs7700-sp18
+LogonID: cs770095
+
+/****************************************Introduction**************************************/
+
+This is a program project for the course CSC 7700 Advanced Storage Systems, Spring 2018.
+The purpose of this project is to develop a simple storage benchmark tool that generates 
+different types of workloads to drive the performance tests on a disk drive. 
+
+The rest of the README file consists of three parts:
+
+Part 1: Run and compile the codes
+Part 2: The structure of the source code files
+Part 3: Additional descriptions
+
+/******************************Part 1: Run and compile the codes*************************/
+
+The tool is super easy to use.
+
+(1) To compile, just use the make command: $ make  
+(2) After successfully compiling, you will get an executable file (the benchmark tool): simplebench
+(3) For using the tool, nine parameters have to be correctly set.
+
+The tool is driven by the parameter settings as follows:
+   
+    ./simplebench -e <Duration (s)>          /*setting the duration of the test in seconds*/
+                  -f <Device or File>        /*setting the target device or file*/
+                  -r <Range (MBs)>           /*setting The accessible range in MB*/
+                  -s <Request Size (KBs)>    /*setting the request size in K*/
+                  -t <Type (Read or Write)>  /*setting the request tyep as Read (R) or Write (W)*/
+                  -p <Pattern (Seq. or Rnd)> /*setting the pattern as sequential (S) or random(R))*/
+                  -q <Num of Threads>        /*setting the queue depth (parallel threads, 1 to 32)*/       
+                  -d <O_DIRECT or not>       /*setting the direct_io flag as (T) or not setting as (F)*/
+                  -o <output trace>          /*setting the output trace file name*/
+
+For example:
+
+    $ ./simplebench -e 60 -f ./testfile -r 1024 -s 4 -t R -p S -q 4 -d T -o ./test.tr
+
+    This command runs a test of 60 seconds to test the file ./testfile with 4 threads, 
+    generating sequential, 4KB, direct I/O, read requests in the range of the first 1 GB 
+    of the file, and produces an output trace file ./test.tr upon completion.
+
+The output information printed on the screen includes the results calculated by different 
+metrics (i.e., average latency, throughout, and bandwidth). Each line of the trace file 
+presents the activity of each I/O request, following the format:
+ 
+    [Timestamp] [Thread ID] [Type] [Offset] [Size] [Latency]
+ 
+    Timestamp: The issue time of I/O (in seconds); the first request timestamp begins at 0.
+    Thread ID: The ID of the thread generating this request Type R or W.
+    Offset: The request offset (in unit of 512-byte sectors).
+    Size: The request size (in number of sectors).
+    Latency: The time of completing request (in milliseconds).
+
+Notes:
+
+(1) Parameter Settings
+
+The parameters can be set in any order; but all of them have to be properly set.
+Refer to the descriptions above for details. The tool will report the incorrect 
+settings.
+
+(2) Access permissions
+
+The tool will check your permissions to test the target file or device. Before testing, 
+make sure you have the permission to access the target file or device to be tested. 
+For the trace file; make sure you have the permissionto create the file.  
+
+(3) Interfernces of I/O tracing
+
+The process of collecting I/O traces may interfere the testing process, therefore it is not 
+proper put the trace file on the drive to be tested. In particular, when the trace file is 
+not too large, it can be put in an RAM-based file system such as tempfs (e.g., under the 
+directory "/run" on Linux OS). 
+
+(4) Factors affecting the observed performance 
+
+For using direct_io, the buffer has to be alligned with the memory page size; therefore, the 
+observed performance may be different by using different operation systems.
+
+In addition, directly writing a disk drive (especially with direct_io) may lead to system 
+corruption if the system metadata on the drive was overwriten.
+
+The functions used to issue read and write requests, such as read/write and pread/pwrite, 
+may have different performance. Specifically, this tool uses the read/write functions.
+
+/***************************Part 2: The structure of the source files*********************/
+
+The project has eight source code files:
+
+project
+  |-- benchmark.h     --> contains all the declarations of the functions and data structures.
+  |    |--- benchmark.cpp --> implement the related functions.
+  |-- utility.h   --> defines the utility functions.
+  |    |--- utility.cpp   --> implement the utility functions. 
+  |-- main.cpp     --> defines the main fuction and parameter parsing
+  |-- Makefile          --> compiles the codes.
+
+
